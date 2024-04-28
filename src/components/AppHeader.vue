@@ -60,6 +60,13 @@ const paginaFavoritos = computed(() => route.name === 'favoritos')
           >
           <select name="categoria" id="categoria" class="p-3 w-full rounded-lg focus:outline-none">
             <option value="">-- Seleccione --</option>
+            <option
+              v-for="categoria in bebidas.categorias"
+              :key="categoria['strCategory']"
+              :value="categoria['strCategory']"
+            >
+              {{ categoria['strCategory'] }}
+            </option>
           </select>
         </div>
         <!--          Botón -->
