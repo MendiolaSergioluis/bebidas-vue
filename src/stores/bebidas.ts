@@ -2,7 +2,7 @@ import { ref, type Ref, reactive, onMounted } from 'vue'
 import { defineStore } from 'pinia'
 import APIService from '@/services/APIService'
 
-import type { Categoria, Busqueda } from '@/helpers/types'
+import type { Categoria, Busqueda, Receta } from '@/helpers/types'
 
 export const useBebidasStore = defineStore('bebidas', () => {
   const categorias: Ref<Categoria[]> = ref([] as Categoria[])
@@ -10,7 +10,7 @@ export const useBebidasStore = defineStore('bebidas', () => {
     nombre: '',
     categoria: ''
   })
-  const recetas = ref([] as unknown)
+  const recetas: Ref<Receta[]> = ref([])
 
   onMounted(async function (): Promise<void> {
     categorias.value = (await APIService.obtenerCategorias()).data.drinks as Categoria[]
