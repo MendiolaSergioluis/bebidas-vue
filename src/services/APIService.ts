@@ -7,7 +7,9 @@ export default {
   },
   buscarRecetas(busqueda: Busqueda) {
     const { categoria, nombre } = busqueda
-    console.log(categoria, nombre)
     return api(`/filter.php?c=${categoria}&&i=${nombre}`)
+  },
+  buscarReceta(id: string) {
+    return api(`/lookup.php?i=${id}`)
   }
 }
