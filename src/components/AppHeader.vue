@@ -5,10 +5,10 @@ import { useBebidasStore } from '@/stores/bebidas'
 
 const route = useRoute()
 const bebidas = useBebidasStore()
-
 console.log(bebidas.categorias)
 
 const paginaInicio = computed(() => route.name === 'inicio')
+const paginaFavoritos = computed(() => route.name === 'favoritos')
 </script>
 
 <template>
@@ -23,15 +23,15 @@ const paginaInicio = computed(() => route.name === 'inicio')
         <nav class="flex gap-4">
           <RouterLink
             :to="{ name: 'inicio' }"
-            class="text-white uppercase font-bold"
-            active-class="text-orange-500"
+            class="uppercase font-bold"
+            :class="paginaInicio ? 'text-orange-500' : 'text-white'"
           >
             Inicio
           </RouterLink>
           <RouterLink
             :to="{ name: 'favoritos' }"
-            class="text-white uppercase font-bold"
-            active-class="text-orange-500"
+            class="uppercase font-bold"
+            :class="paginaFavoritos ? 'text-orange-500' : 'text-white'"
           >
             Favoritos
           </RouterLink>
