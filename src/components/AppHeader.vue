@@ -8,6 +8,11 @@ const bebidas = useBebidasStore()
 
 const paginaInicio = computed(() => route.name === 'inicio')
 const paginaFavoritos = computed(() => route.name === 'favoritos')
+
+const handleSubmit = () => {
+  // TODO: Validar
+  bebidas.obtenerRecetas()
+}
 </script>
 
 <template>
@@ -38,6 +43,7 @@ const paginaFavoritos = computed(() => route.name === 'favoritos')
       </div>
       <form
         v-if="paginaInicio"
+        @submit.prevent="handleSubmit"
         class="md:w-1/2 2xl:w-1/3 bg-orange-400 my-32 p-10 rounded-lg shadow space-y-6"
       >
         <!--          Ingrediente Input -->
@@ -59,10 +65,10 @@ const paginaFavoritos = computed(() => route.name === 'favoritos')
             >Categoría</label
           >
           <select
-              name="categoria"
-              id="categoria"
-              class="p-3 w-full rounded-lg focus:outline-none"
-              v-model="bebidas.busqueda.categoria"
+            name="categoria"
+            id="categoria"
+            class="p-3 w-full rounded-lg focus:outline-none"
+            v-model="bebidas.busqueda.categoria"
           >
             <option value="">-- Seleccione --</option>
             <option
