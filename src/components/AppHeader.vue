@@ -5,7 +5,6 @@ import { useBebidasStore } from '@/stores/bebidas'
 
 const route = useRoute()
 const bebidas = useBebidasStore()
-console.log(bebidas.categorias)
 
 const paginaInicio = computed(() => route.name === 'inicio')
 const paginaFavoritos = computed(() => route.name === 'favoritos')
@@ -50,6 +49,7 @@ const paginaFavoritos = computed(() => route.name === 'favoritos')
             type="text"
             id="ingrediente"
             placeholder="Nombre o Ingrediente: Ej. Vodka, Tequila, etc..."
+            v-model="bebidas.busqueda.nombre"
             class="p-3 w-full rounded-lg focus:outline-none"
           />
         </div>
@@ -58,7 +58,12 @@ const paginaFavoritos = computed(() => route.name === 'favoritos')
           <label for="categoria" class="block text-white uppercase font-extrabold text-lg"
             >Categoría</label
           >
-          <select name="categoria" id="categoria" class="p-3 w-full rounded-lg focus:outline-none">
+          <select
+              name="categoria"
+              id="categoria"
+              class="p-3 w-full rounded-lg focus:outline-none"
+              v-model="bebidas.busqueda.categoria"
+          >
             <option value="">-- Seleccione --</option>
             <option
               v-for="categoria in bebidas.categorias"
