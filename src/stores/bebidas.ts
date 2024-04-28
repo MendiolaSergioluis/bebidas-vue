@@ -1,6 +1,6 @@
 import { ref, type Ref, reactive, onMounted } from 'vue'
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import APIService from '@/services/APIService'
 
 import type { Categoria, Busqueda } from '@/helpers/types'
 
@@ -12,8 +12,7 @@ export const useBebidasStore = defineStore('bebidas', () => {
   })
 
   onMounted(async function (): Promise<void> {
-    categorias.value = (await axios('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list'))
-      .data.drinks as Categoria[]
+    categorias.value = (await APIService.obtenerCategorias()).data.drinks as Categoria[]
   })
 
   function obtenerRecetas() {
