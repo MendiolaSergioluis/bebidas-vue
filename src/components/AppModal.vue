@@ -1,10 +1,41 @@
 <script setup lang="ts">
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { useModalStore } from '@/stores/modal'
+import { useBebidasStore } from '@/stores/bebidas'
+import { computed } from 'vue'
+
+const modal = useModalStore()
+const bebidas = useBebidasStore()
+
+const formatearIngredientes = () => {
+  const ingredientesDiv = document.createElement('div')
+
+  for (let i = 1; i <= 15; i++) {
+    if (bebidas.receta[`strIngredient${i}` as keyof typeof bebidas.receta]) {
+      const ingrediente = bebidas.receta[`strIngredient${i}` as keyof typeof bebidas.receta]
+      const cantidad = bebidas.receta[`strMeasure${i}` as keyof typeof bebidas.receta]
+
+      const ingredienteCantidad = document.createElement('p')
+      ingredienteCantidad.classList.add('text-lg', 'text-gray-500')
+      ingredienteCantidad.textContent = `${ingrediente} - ${cantidad}`
+
+      ingredientesDiv.appendChild(ingredienteCantidad)
+    }
+  }
+  return ingredientesDiv
+}
+const instrucciones = computed(() => {
+  if (bebidas.receta.strInstructionsES) {
+    return bebidas.receta.strInstructionsES
+  } else {
+    return bebidas.receta.strInstructions
+  }
+})
 </script>
 
 <template>
-  <TransitionRoot as="template" :show="true">
-    <Dialog as="div" class="relative z-10">
+  <TransitionRoot as="template" :show="modal.modal">
+    <Dialog as="div" class="relative z-10" @close="modal.handleClickModal">
       <TransitionChild
         as="template"
         enter="ease-out duration-300"
@@ -33,9 +64,34 @@ import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } fro
               class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6"
             >
               <div>
-                <div class="mt-3"></div>
+                <div class="mt-3">
+                  <DialogTitle as="h3" class="text-gray-900 text-4xl font-extrabold my-5">
+                    {{ bebidas.receta.strDrink }}
+                  </DialogTitle>
+                  <img
+                    :src="bebidas.receta.strDrinkThumb"
+                    :alt="`Imagen de bebida: ${bebidas.receta.strDrink}`"
+                    class="rounded-2xl mx-auto w-96"
+                  />
+                  <DialogTitle as="h3" class="text-gray-900 text-4xl font-extrabold my-5">
+                    Ingredientes y Cantidades
+                  </DialogTitle>
+                  <div v-html="formatearIngredientes().outerHTML" />
+                  <DialogTitle as="h3" class="text-gray-900 text-4xl font-extrabold my-5">
+                    Instrucciones
+                  </DialogTitle>
+                  <p class="text-lg text-gray-500">{{ instrucciones }}</p>
+                </div>
               </div>
-              <div class="mt-5 sm:mt-6 flex justify-between gap-4"></div>
+              <div class="mt-5 sm:mt-6 flex justify-between gap-4">
+                <button
+                  type="button"
+                  class="w-full rounded bg-gray-600 p-3 font-bold uppercase text-white shadow hover:bg-gray-500"
+                  @click="modal.handleClickModal()"
+                >
+                  Cerrar
+                </button>
+              </div>
             </DialogPanel>
           </TransitionChild>
         </div>

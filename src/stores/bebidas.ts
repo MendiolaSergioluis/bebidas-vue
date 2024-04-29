@@ -1,16 +1,18 @@
 import { ref, type Ref, reactive, onMounted } from 'vue'
 import { defineStore } from 'pinia'
 import APIService from '@/services/APIService'
-
-import type { Categoria, Busqueda, Receta } from '@/helpers/types'
+import { useModalStore } from '@/stores/modal'
+import type { Categoria, Busqueda, Receta, RecetaDetails } from '@/helpers/types'
 
 export const useBebidasStore = defineStore('bebidas', () => {
+  const modal = useModalStore()
   const categorias: Ref<Categoria[]> = ref([] as Categoria[])
   const busqueda: Busqueda = reactive({
     nombre: '',
     categoria: ''
   })
-  const recetas: Ref<Receta[]> = ref([])
+  const recetas: Ref<Receta[]> = ref([] as Receta[])
+  const receta: Ref<RecetaDetails> = ref({} as RecetaDetails)
 
   onMounted(async function (): Promise<void> {
     categorias.value = (await APIService.obtenerCategorias()).data.drinks as Categoria[]
@@ -27,7 +29,8 @@ export const useBebidasStore = defineStore('bebidas', () => {
     const {
       data: { drinks }
     } = await APIService.buscarReceta(id)
-    console.log(drinks[0])
+    receta.value = drinks[0]
+    modal.handleClickModal()
   }
 
   return {
@@ -35,6 +38,7 @@ export const useBebidasStore = defineStore('bebidas', () => {
     busqueda,
     obtenerRecetas,
     recetas,
-    seleccionarBebida
+    seleccionarBebida,
+    receta
   }
 })
