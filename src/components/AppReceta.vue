@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { Receta } from '@/helpers/types'
+import type { Receta, RecetaDetails } from '@/helpers/types'
 import { useBebidasStore } from '@/stores/bebidas'
 
 const bebidas = useBebidasStore()
 
 defineProps<{
-  receta: Receta
+  receta: Receta | RecetaDetails
 }>()
 </script>
 
